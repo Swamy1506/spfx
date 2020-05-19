@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "hello-webpart-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/helloWebpart/HelloWebpartWebPart.js",
+          "manifest": "./src/webparts/helloWebpart/HelloWebpartWebPart.manifest.json"
+        }
+      ]
+    },
+    "list-crud-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/listCrud/ListCrudWebPart.js",
+          "manifest": "./src/webparts/listCrud/ListCrudWebPart.manifest.json"
+        }
+      ]
+    },
+    "pnp-crud-webpart-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/pnpCrudWebpart/PnpCrudWebpartWebPart.js",
+          "manifest": "./src/webparts/pnpCrudWebpart/PnpCrudWebpartWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "HelloWebpartWebPartStrings": "lib/webparts/helloWebpart/loc/{locale}.js",
+    "ListCrudWebPartStrings": "lib/webparts/listCrud/loc/{locale}.js",
+    "PnpCrudWebpartWebPartStrings": "lib/webparts/pnpCrudWebpart/loc/{locale}.js"
+  }
+}
