@@ -8,8 +8,8 @@ import { escape } from '@microsoft/sp-lodash-subset';
 
 import styles from './PnpCrudWebpartWebPart.module.scss';
 import * as strings from 'PnpCrudWebpartWebPartStrings';
-import * as pnp from 'sp-pnp-js';
 import { getIconClassName } from '@uifabric/styling';
+import { PnpHelper } from './pnphelper';
 export interface IPnpCrudWebpartWebPartProps {
   listName: string;
 }
@@ -66,7 +66,7 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
   }
 
   private _getSPItems(): Promise<ISPList[]> {
-    return pnp.sp.web.lists.getByTitle(this.properties.listName).items.get().then((response) => {
+    return PnpHelper.GetAllListItems(this.properties.listName).then((response) => {
       return response;
     });
   }
@@ -98,8 +98,6 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
           `;
       });
 
-
-
     }
     else {
       html += "No records...";
@@ -113,7 +111,6 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
 
     for (let j: number = 0; j < listItems.length; j++) {
       listItems[j].addEventListener('click', (event) => {
-        debugger;
         let me: any = event.target;
         this.deleteItem(me.id);
       });
@@ -132,7 +129,7 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
   }
 
   private editItem(id: any) {
-    pnp.sp.web.lists.getByTitle(this.properties.listName).items.getById(id).get().then(res => {
+    PnpHelper.GetListItemById(this.properties.listName, id).then(res => {
       document.getElementById('idPName')["value"] = res.Title;
       document.getElementById('idPrice')["value"] = res.Price;
       document.getElementById('ID')["value"] = res.ID;
@@ -146,7 +143,7 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
       return;
     }
 
-    pnp.sp.web.lists.getByTitle(this.properties.listName).items.getById(id).delete().then(res => {
+    PnpHelper.DeleteListItemById(this.properties.listName, id).then(res => {
       document.getElementById('toasterMsg').innerHTML = "Product deleted successfully";
       this.resetForm();
     });
@@ -154,14 +151,16 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
   }
 
   private createItem(): void {
-    pnp.sp.web.lists.getByTitle(this.properties.listName).items.add({
-      Title: document.getElementById('idPName')["value"],
-      Price: document.getElementById('idPrice')["value"],
-    }).then(res => {
+
+    const body = {
+      'Title': document.getElementById('idPName')["value"],
+      'Price': document.getElementById('idPrice')["value"],
+    };
+
+    PnpHelper.CreateListItem(this.properties.listName, body).then(res => {
       document.getElementById('toasterMsg').innerHTML = "Product added successfully";
       this.resetForm();
     });
-
   }
 
   private resetForm() {
@@ -177,11 +176,14 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
   }
 
   private updateItem(): void {
+
     const itemId = document.getElementById('ID')['value'];
-    pnp.sp.web.lists.getByTitle(this.properties.listName).items.getById(itemId).update({
-      Title: document.getElementById('idPName')["value"],
-      Price: document.getElementById('idPrice')["value"]
-    }).then(res => {
+    const body = {
+      'Title': document.getElementById('idPName')["value"],
+      'Price': document.getElementById('idPrice')["value"],
+    };
+
+    PnpHelper.UpdateListItemById(this.properties.listName, itemId, body).then(res => {
       document.getElementById('toasterMsg').innerHTML = "Product updated successfully";
       this.resetForm();
     });
