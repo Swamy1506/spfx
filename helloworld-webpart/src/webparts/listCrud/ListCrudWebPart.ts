@@ -180,10 +180,8 @@ export default class ListCrudWebPart extends BaseClientSideWebPart<IListCrudWebP
   }
 
   private editItem(id: any) {
-    debugger;
     // throw new Error("Method not implemented.");
     this.getByIdItem(id).then(res => {
-      debugger;
       document.getElementById('idPName')["value"] = res.Title;
       document.getElementById('idPrice')["value"] = res.Price;
       document.getElementById('ID')["value"] = res.ID;
@@ -192,7 +190,6 @@ export default class ListCrudWebPart extends BaseClientSideWebPart<IListCrudWebP
       document.getElementById("createBtn").style.display = "none";
 
     }, error => {
-      debugger;
     });
 
   }

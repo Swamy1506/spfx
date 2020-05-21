@@ -126,7 +126,6 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
   }
 
   private editItem(id: any) {
-    debugger;
     pnp.sp.web.lists.getByTitle(this.properties.listName).items.getById(id).get().then(res => {
       document.getElementById('idPName')["value"] = res.Title;
       document.getElementById('idPrice')["value"] = res.Price;
@@ -140,6 +139,11 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
     if (!window.confirm('Are you sure you want to delete the product of id? ' + id)) {
       return;
     }
+
+    pnp.sp.web.lists.getByTitle(this.properties.listName).items.getById(id).delete().then(res => {
+      document.getElementById('toasterMsg').innerHTML = "Product deleted successfully";
+      this.resetForm();
+    });
 
   }
 
