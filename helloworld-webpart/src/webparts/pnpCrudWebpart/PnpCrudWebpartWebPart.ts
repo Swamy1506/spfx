@@ -66,7 +66,6 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
 
   private _getSPItems(): Promise<ISPList[]> {
     return pnp.sp.web.lists.getByTitle(this.properties.listName).items.get().then((response) => {
-      debugger;
       return response;
     });
   }
@@ -94,25 +93,7 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
           `;
       });
 
-      //  delete Start Bind The Event into anchor Tag
-      let listItems = document.getElementsByClassName("DeleteLink");
 
-      for (let j: number = 0; j < listItems.length; j++) {
-        listItems[j].addEventListener('click', (event) => {
-          let me: any = event.target;
-          this.deleteItem(me.id);
-        });
-      }
-
-      //  delete Start Bind The Event into anchor Tag
-      let editLinks = document.getElementsByClassName("EditLink");
-
-      for (let j: number = 0; j < editLinks.length; j++) {
-        editLinks[j].addEventListener('click', (event) => {
-          let me: any = event.target;
-          this.editItem(me.id);
-        });
-      }
 
     }
     else {
@@ -121,20 +102,38 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
     html += `</table>`;
     const listContainer: Element = this.domElement.querySelector('#DivGetItems');
     listContainer.innerHTML = html;
+
+    //  delete Start Bind The Event into anchor Tag
+    let listItems = document.getElementsByClassName("DeleteLink");
+
+    for (let j: number = 0; j < listItems.length; j++) {
+      listItems[j].addEventListener('click', (event) => {
+        let me: any = event.target;
+        this.deleteItem(me.id);
+      });
+    }
+
+    //  delete Start Bind The Event into anchor Tag
+    let editLinks = document.getElementsByClassName("EditLink");
+
+    for (let j: number = 0; j < editLinks.length; j++) {
+      editLinks[j].addEventListener('click', (event) => {
+        let me: any = event.target;
+        this.editItem(me.id);
+      });
+    }
+
   }
 
   private editItem(id: any) {
     debugger;
-    // throw new Error("Method not implemented.");
-    debugger;
-    // document.getElementById('idPName')["value"] = res.Title;
-    // document.getElementById('idPrice')["value"] = res.Price;
-    // document.getElementById('ID')["value"] = res.ID;
-
-    // document.getElementById("updateBtn").style.display = "inline-block";
-    // document.getElementById("createBtn").style.display = "none";
-
-
+    pnp.sp.web.lists.getByTitle(this.properties.listName).items.getById(id).get().then(res => {
+      document.getElementById('idPName')["value"] = res.Title;
+      document.getElementById('idPrice')["value"] = res.Price;
+      document.getElementById('ID')["value"] = res.ID;
+      document.getElementById("updateBtn").style.display = "inline-block";
+      document.getElementById("createBtn").style.display = "none";
+    });
   }
 
   private deleteItem(id: number): void {
@@ -149,10 +148,8 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
       Title: document.getElementById('idPName')["value"],
       Price: document.getElementById('idPrice')["value"],
     }).then(res => {
-      debugger;
       document.getElementById('toasterMsg').innerHTML = "Product added successfully";
       this.resetForm();
-      this.getAllItems();
     });
 
   }
@@ -161,9 +158,23 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
     document.getElementById('idPName')["value"] = '';
     document.getElementById('idPrice')["value"] = '';
     document.getElementById('ID')["value"] = '';
+
+    document.getElementById("updateBtn").style.display = "none";
+    document.getElementById("createBtn").style.display = "inline-block";
+
+    this.getAllItems();
+
   }
 
   private updateItem(): void {
+    const itemId = document.getElementById('ID')['value'];
+    pnp.sp.web.lists.getByTitle(this.properties.listName).items.getById(itemId).update({
+      Title: document.getElementById('idPName')["value"],
+      Price: document.getElementById('idPrice')["value"]
+    }).then(res => {
+      document.getElementById('toasterMsg').innerHTML = "Product updated successfully";
+      this.resetForm();
+    });
 
   }
 
