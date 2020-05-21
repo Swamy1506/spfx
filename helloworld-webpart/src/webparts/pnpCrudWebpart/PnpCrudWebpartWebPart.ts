@@ -36,12 +36,8 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
                                   <input type="text" id="idPName" name="Title" placeholder="product name">
                                   <input type="text" id="idPrice" name="Price" placeholder="price">
                                   <input type="text" id="ID" name="ID" placeholder="product ID">
-                                  <button class="${styles.button} create-Button" id="createBtn">
-                                      <span class="${styles.label}">Save Product</span>
-                                  </button>
-                                  <button class="${styles.button} update-Button" id="updateBtn">
-                                      <span class="${styles.label}">Update Product</span>
-                                  </button>
+                                  <input type="button" class="${styles.button} create-Button" id="createBtn" value="Save Product">
+                                  <input type="button" class="${styles.button} update-Button" id="updateBtn" value="Update Product">
                               </div>
                           </div>
                           <div style="background-color: white; color: black;" id="DivGetItems" />    
@@ -61,8 +57,8 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
 
   private setButtonsEventHandlers(): void {
     const webPart: PnpCrudWebpartWebPart = this;
-    this.domElement.querySelector('button.create-Button').addEventListener('click', () => { webPart.createItem(); });
-    this.domElement.querySelector('button.update-Button').addEventListener('click', () => { webPart.updateItem(); });
+    this.domElement.querySelector('.create-Button').addEventListener('click', () => { webPart.createItem(); });
+    this.domElement.querySelector('.update-Button').addEventListener('click', () => { webPart.updateItem(); });
   }
 
   private _getSPItems(): Promise<ISPList[]> {
@@ -79,7 +75,7 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
   }
 
   private _renderList(items: ISPList[]): void {
-    let html: string = '<table class="TFtable" border=1 width=style="bordercollapse: collapse;">';
+    let html: string = '<table class="TFtable" border=1 width=100% style="border-collapse: collapse;">';
     html += `<th>Edit</th><th>ID</th><th>Name</th><th>Price</th><th>Delete</th>`;
     if (items.length > 0) {
       items.forEach((item: ISPList) => {
