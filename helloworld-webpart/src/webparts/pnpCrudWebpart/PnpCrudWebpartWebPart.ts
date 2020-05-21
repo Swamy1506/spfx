@@ -9,6 +9,7 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import styles from './PnpCrudWebpartWebPart.module.scss';
 import * as strings from 'PnpCrudWebpartWebPartStrings';
 import * as pnp from 'sp-pnp-js';
+import { getIconClassName } from '@uifabric/styling';
 export interface IPnpCrudWebpartWebPartProps {
   listName: string;
 }
@@ -79,16 +80,20 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
 
   private _renderList(items: ISPList[]): void {
     let html: string = '<table class="TFtable" border=1 width=style="bordercollapse: collapse;">';
-    html += `<th></th><th>ID</th><th>Name</th><th>Price</th><th>Actions</th>`;
+    html += `<th>Edit</th><th>ID</th><th>Name</th><th>Price</th><th>Delete</th>`;
     if (items.length > 0) {
       items.forEach((item: ISPList) => {
         html += `    
            <tr>   
-              <td>  <input type="radio" id="ProductId" name="ProductId" value="${item.ID}"> <br> </td>   
+              <td> 
+                <i id='${item.ID}' class="${getIconClassName('Edit')} EditLink" />
+              </td>   
               <td>${item.ID}</td>    
               <td>${item.Title}</td>    
               <td>${item.Price}</td>    
-              <td> <a id='${item.ID}' href='#' class='EditLink'>Edit</a>  <a id='${item.ID}' href='#' class='DeleteLink'>Delete</a></td>   
+              <td> 
+                <i id='${item.ID}' class="${getIconClassName('Delete')} DeleteLink" />
+              </td>   
            </tr>    
           `;
       });
@@ -108,6 +113,7 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
 
     for (let j: number = 0; j < listItems.length; j++) {
       listItems[j].addEventListener('click', (event) => {
+        debugger;
         let me: any = event.target;
         this.deleteItem(me.id);
       });
