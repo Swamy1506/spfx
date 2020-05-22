@@ -28,8 +28,8 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
               <div class="${ styles.container}">
                   <div class="${ styles.row}">
                       <div class="${ styles.column}">
-                          <h2>Create/Edit Product</h2>
-
+                          <h2 style="color: #ffffff; font-weight: bold;">Create/Edit Product</h2>
+                          <br />
                           <div id="toasterMsg"></div>
                           <div class="ms-TextField">
                             <label class="ms-Label">Product Name</label>
@@ -38,7 +38,7 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
                           <br />
                           <div class="ms-TextField">
                             <label class="ms-Label">Price</label>
-                            <input type="text" id="idPrice" name="Price" placeholder="price" style="margin-left: 58px">
+                            <input type="text" id="idPrice" name="Price" placeholder="price" style="margin-left: 55px">
                           </div>
                           <br />
                           <div style="margin-left: 35%;">
@@ -48,7 +48,7 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
                             <input type="text" id="ID" name="ID" placeholder="product ID">
                           </div>
 
-                          <h3> All Products </h3>
+                          <h3 style="color: #ffffff; font-weight: bold;"> All Products </h3>
                           <div style="background-color: white; color: black;" id="DivGetItems" />    
                           </div>  
 
