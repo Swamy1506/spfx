@@ -25,12 +25,21 @@
           "manifest": "./src/webparts/pnpCrudWebpart/PnpCrudWebpartWebPart.manifest.json"
         }
       ]
+    },
+    "react-crud-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/reactCrud/ReactCrudWebPart.js",
+          "manifest": "./src/webparts/reactCrud/ReactCrudWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "HelloWebpartWebPartStrings": "lib/webparts/helloWebpart/loc/{locale}.js",
     "ListCrudWebPartStrings": "lib/webparts/listCrud/loc/{locale}.js",
-    "PnpCrudWebpartWebPartStrings": "lib/webparts/pnpCrudWebpart/loc/{locale}.js"
+    "PnpCrudWebpartWebPartStrings": "lib/webparts/pnpCrudWebpart/loc/{locale}.js",
+    "ReactCrudWebPartStrings": "lib/webparts/reactCrud/loc/{locale}.js"
   }
 }
