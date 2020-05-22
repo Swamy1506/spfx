@@ -1,7 +1,7 @@
 declare interface IReactCrudWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
-  DescriptionFieldLabel: string;
+  ListNameFieldLabel: string;
 }
 
 declare module 'ReactCrudWebPartStrings' {

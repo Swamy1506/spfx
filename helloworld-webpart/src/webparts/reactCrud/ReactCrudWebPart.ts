@@ -12,16 +12,18 @@ import ReactCrud from './components/ReactCrud';
 import { IReactCrudProps } from './components/IReactCrudProps';
 
 export interface IReactCrudWebPartProps {
-  description: string;
+  listName: string;
 }
 
-export default class ReactCrudWebPart extends BaseClientSideWebPart <IReactCrudWebPartProps> {
+export default class ReactCrudWebPart extends BaseClientSideWebPart<IReactCrudWebPartProps> {
 
   public render(): void {
     const element: React.ReactElement<IReactCrudProps> = React.createElement(
       ReactCrud,
       {
-        description: this.properties.description
+        listName: this.properties.listName,
+        spHttpClient: this.context.spHttpClient,
+        siteUrl: this.context.pageContext.web.absoluteUrl
       }
     );
 
@@ -47,8 +49,8 @@ export default class ReactCrudWebPart extends BaseClientSideWebPart <IReactCrudW
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
+                PropertyPaneTextField('listName', {
+                  label: strings.ListNameFieldLabel
                 })
               ]
             }
