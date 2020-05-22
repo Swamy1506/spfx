@@ -28,18 +28,27 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
               <div class="${ styles.container}">
                   <div class="${ styles.row}">
                       <div class="${ styles.column}">
-                          <p class="${ styles.description}">${escape(this.properties.listName)}</p>
+                          <h2>Create/Edit Product</h2>
 
                           <div id="toasterMsg"></div>
-                          <div class="ms-Grid-row ms-bgColor-themeDark ms-fontColor-white ${styles.row}">
-                              <div class="ms-Grid-col ms-u-lg10 ms-u-xl8 ms-u-xlPush2 ms-u-lgPush1">
-                                  <input type="text" id="idPName" name="Title" placeholder="product name">
-                                  <input type="text" id="idPrice" name="Price" placeholder="price">
-                                  <input type="text" id="ID" name="ID" placeholder="product ID">
-                                  <input type="button" class="${styles.button} create-Button" id="createBtn" value="Save Product">
-                                  <input type="button" class="${styles.button} update-Button" id="updateBtn" value="Update Product">
-                              </div>
+                          <div class="ms-TextField">
+                            <label class="ms-Label">Product Name</label>
+                            <input type="text" id="idPName" name="Title" placeholder="product name">
                           </div>
+                          <br />
+                          <div class="ms-TextField">
+                            <label class="ms-Label">Price</label>
+                            <input type="text" id="idPrice" name="Price" placeholder="price" style="margin-left: 58px">
+                          </div>
+                          <br />
+                          <div style="margin-left: 35%;">
+                            <input type="button" class="${styles.button} create-Button" id="createBtn" value="Save Product">
+                            <input type="button" class="${styles.button} update-Button" id="updateBtn" value="Update Product">
+                            <input type="button" class="${styles.button} clear-Button" id="clearBtn" value="Clear">
+                            <input type="text" id="ID" name="ID" placeholder="product ID">
+                          </div>
+
+                          <h3> All Products </h3>
                           <div style="background-color: white; color: black;" id="DivGetItems" />    
                           </div>  
 
@@ -59,6 +68,7 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
     const webPart: PnpCrudWebpartWebPart = this;
     this.domElement.querySelector('.create-Button').addEventListener('click', () => { webPart.createItem(); });
     this.domElement.querySelector('.update-Button').addEventListener('click', () => { webPart.updateItem(); });
+    this.domElement.querySelector('.clear-Button').addEventListener('click', () => { webPart.resetForm(); });
   }
 
   private _getSPItems(): Promise<ISPList[]> {
@@ -148,15 +158,29 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
 
   private createItem(): void {
 
-    const body = {
-      'Title': document.getElementById('idPName')["value"],
-      'Price': document.getElementById('idPrice')["value"],
-    };
+    const pName = document.getElementById('idPName')["value"];
+    const price = document.getElementById('idPrice')["value"];
 
-    PnpHelper.CreateListItem(this.properties.listName, body).then(res => {
-      document.getElementById('toasterMsg').innerHTML = "Product added successfully";
-      this.resetForm();
-    });
+
+    if (!pName) {
+      document.getElementById('toasterMsg').innerHTML = "Product Name is required";
+      return;
+    }
+    if (!price) {
+      document.getElementById('toasterMsg').innerHTML = "Price is required";
+      return;
+    }
+
+    if (pName && price) {
+      const body = {
+        'Title': pName,
+        'Price': price,
+      };
+      PnpHelper.CreateListItem(this.properties.listName, body).then(res => {
+        document.getElementById('toasterMsg').innerHTML = "Product added successfully";
+        this.resetForm();
+      });
+    }
   }
 
   private resetForm() {
@@ -168,6 +192,10 @@ export default class PnpCrudWebpartWebPart extends BaseClientSideWebPart<IPnpCru
     document.getElementById("createBtn").style.display = "inline-block";
 
     this.getAllItems();
+
+    setTimeout(() => {
+      document.getElementById('toasterMsg').innerHTML = "";
+    }, 2000);
 
   }
 
